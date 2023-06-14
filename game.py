@@ -80,17 +80,29 @@ if new:
     opening_text(window, connection, insert_db, fpsClock,save_slot)
     opening_game_screen(window,connection,insert_db,fpsClock,save_slot) 
     
-player_stats=select_db(connection,"player",[f"id='{save_slot}'"]).fetchall()
-if player_stats[0][5]==1:
-    scene_room_1(save_slot,window,connection,fpsClock,update_db)
-elif player_stats[0][5]==2:
-    shop_room_1(save_slot,window,connection,fpsClock,update_db,False)
-elif player_stats[0][5]==3:
-    scene_room_2(save_slot,window,connection,fpsClock,update_db,False)
-elif player_stats[0][5]==4:
-    shop_room_2(save_slot,window,connection,fpsClock,update_db,False)
-elif player_stats[0][5]==5:
-    final_scene_room(save_slot,window,connection,fpsClock,update_db,False)
+start_game=True
+while start_game:
+    player_stats=select_db(connection,"player",[f"id='{save_slot}'"]).fetchall()
+    if player_stats[0][5]==1:
+        scene_room_1(save_slot,window,connection,fpsClock,update_db)
+    elif player_stats[0][5]==2:
+        combat_room_1(save_slot,window,connection,fpsClock,update_db,)
+    elif player_stats[0][5]==3:
+        shop_room_1(save_slot,window,connection,fpsClock,update_db,)
+    elif player_stats[0][5]==4:
+        boss_room_1(save_slot,window,connection,fpsClock,update_db,)
+    elif player_stats[0][5]==5:
+        scene_room_2(save_slot,window,connection,fpsClock,update_db,)
+    elif player_stats[0][5]==6:
+        combat_room_2(save_slot,window,connection,fpsClock,update_db)
+    elif player_stats[0][5]==7:
+        shop_room_2(save_slot,window,connection,fpsClock,update_db,)
+    elif player_stats[0][5]==8:
+        boss_room_2(save_slot,window,connection,fpsClock,update_db,)
+    elif player_stats[0][5]==9:
+        final_scene_room(save_slot,window,connection,fpsClock,update_db,)
+    
+    
 display()
           
 #Main Loop

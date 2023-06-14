@@ -9,7 +9,7 @@ class Player_class(pygame.sprite.Sprite):
         super().__init__()
         self.img_left = pygame.image.load("sprite_images/player_left.png")
         self.img_left =  pygame.transform.scale(self.img_left , (30, 40)).convert_alpha()
-        self.img_right = pygame.image.load("sprite_images/player.png")
+        self.img_right = pygame.image.load("sprite_images/player_right.png")
         self.img_right = pygame.transform.scale(self.img_right , (30, 40)).convert_alpha()
         self.image = self.img_left
         self.mask  = pygame.mask.from_surface(self.image)
