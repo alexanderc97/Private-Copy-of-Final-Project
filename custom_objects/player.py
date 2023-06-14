@@ -20,8 +20,8 @@ class Player_class(pygame.sprite.Sprite):
         global key_input, t_f_list
         t_f_list = {True : 1, False: 0}
         key_input = pygame.key.get_pressed() 
-        self.movex = (t_f_list[key_input[pygame.K_a]] * -2) + (t_f_list[key_input[pygame.K_d]] * 2)
-        self.movey = (t_f_list[key_input[pygame.K_w]] * -2) + (t_f_list[key_input[pygame.K_s]] * 2)
+        self.movex = (t_f_list[key_input[pygame.K_a]] * -4) + (t_f_list[key_input[pygame.K_d]] * 4)
+        self.movey = (t_f_list[key_input[pygame.K_w]] * -4) + (t_f_list[key_input[pygame.K_s]] * 4)
 
     #Dashing Movement
         if pygame.key.get_mods() & pygame.KMOD_SHIFT and (key_input[pygame.K_w] or key_input[pygame.K_s]) and self.dash_timer<0:

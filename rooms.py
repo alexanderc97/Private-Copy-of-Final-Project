@@ -18,7 +18,6 @@ collision_mask = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 sword_group=pygame.sprite.Group()
 
-
     
 def attack(player):
     for event in pygame.event.get():
@@ -27,7 +26,7 @@ def attack(player):
             sword_group.add(sword_sprite)    
 
 def scene_room_1(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(500,600)
+    player = Player_class(200,590)
     player_group.add(player)
     room_1=True
     background_image='images/scene_1_bg.png'
@@ -37,10 +36,10 @@ def scene_room_1(save_slot,window,connection,fpsClock,update_db):
     collision_mask.add(mask)
     while room_1:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -49,18 +48,20 @@ def scene_room_1(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)    
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()     
                 
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='2'"],f"id={save_slot}")
             room_1=False        
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
     
 def combat_room_1(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,240)
     player_group.add(player)
     combat_room_1=True
     background_image='images/zone_1_bg.png'
@@ -70,10 +71,10 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db):
     collision_mask.add(mask)
     while combat_room_1:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -82,29 +83,33 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()
         
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='3'"],f"id={save_slot}")
             combat_room_1=False        
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
 
 def shop_room_1(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,240)
     player_group.add(player)
     background_image='images/shop_bg.png'
     background=pygame.image.load(f'{background_image}')
     background=pygame.transform.scale(background, (1000,700))
+    mask = Mask_class(0,0,1000,700,'masks/combat_mask_2.png')
+    collision_mask.add(mask)
     shop_room_1=True
     while shop_room_1:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -113,32 +118,33 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
         
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='4'"],f"id={save_slot}")
             shop_room_1=False        
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
     
 def boss_room_1(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,240)
     player_group.add(player)
     boss_room_1=True
     background_image='images/zone_1_bg.png'
     background=pygame.image.load(f'{background_image}')
     background=pygame.transform.scale(background, (1000,700))
-    
     mask = Mask_class(0,0,1000,700,'masks/combat_mask_1.png')
     collision_mask.add(mask)
     while boss_room_1:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -147,32 +153,33 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
         
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='5'"],f"id={save_slot}")
             boss_room_1=False        
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
     
 def scene_room_2(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,250)
     player_group.add(player)
     background_image='images/zone_2_bg.png'
     background=pygame.image.load(f'{background_image}')
     background=pygame.transform.scale(background, (1000,700))
     scene_room_2=True
-    
-    mask = Mask_class(0,0,1000,700,'masks/scene_2_mask.png')
+    mask = Mask_class(0,0,1000,700,'masks/combat_mask_2.png')
     collision_mask.add(mask)
     while scene_room_2:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -181,32 +188,33 @@ def scene_room_2(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
     
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='6'"],f"id={save_slot}")
             scene_room_2=False        
 
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
     
 def combat_room_2(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,250)
     player_group.add(player)
     combat_room_2=True
     background_image='images/zone_2_bg.png'
     background=pygame.image.load(f'{background_image}')
     background=pygame.transform.scale(background, (1000,700))
-    
     mask = Mask_class(0,0,1000,700,'masks/combat_mask_2.png')
     collision_mask.add(mask)
     while combat_room_2:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -215,29 +223,33 @@ def combat_room_2(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
 
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='7'"],f"id={save_slot}")
             combat_room_2=False   
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
 
 def shop_room_2(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,240)
     player_group.add(player)
     background_image='images/shop_bg.png'
     background=pygame.image.load(f'{background_image}')
     background=pygame.transform.scale(background, (1000,700))
+    mask = Mask_class(0,0,1000,700,'masks/shop_mask.png')
+    collision_mask.add(mask)
     shop_room_2=True
     while shop_room_2:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -246,32 +258,33 @@ def shop_room_2(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
            
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='8'"],f"id={save_slot}")
             shop_room_2=False    
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
 
 def boss_room_2(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,250)
     player_group.add(player)
     boss_room_2=True
     background_image='images/zone_2_bg.png'
     background=pygame.image.load(f'{background_image}')
     background=pygame.transform.scale(background, (1000,700))
-    
     mask = Mask_class(0,0,1000,700,'masks/combat_mask_2.png')
     collision_mask.add(mask)
     while boss_room_2:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -280,18 +293,20 @@ def boss_room_2(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
         
-        if player.rect.x>1000:
+        if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='9'"],f"id={save_slot}")
             boss_room_2=False 
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
 
 def final_scene_room(save_slot,window,connection,fpsClock,update_db):
-    player = Player_class(100,100)
+    player = Player_class(45,240)
     player_group.add(player)
     final_scene_room=True
     background_image='images/final_scene_bg.png'
@@ -301,10 +316,10 @@ def final_scene_room(save_slot,window,connection,fpsClock,update_db):
     collision_mask.add(mask)
     while final_scene_room:
         window.fill((255,255,255))
+        collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
-        collision_mask.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -313,9 +328,11 @@ def final_scene_room(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
-        if pygame.sprite.spritecollide(player, collision_mask, True, collided=pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
         
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+    collision_mask.remove(mask)
+    player_group.remove(player)
