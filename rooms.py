@@ -6,6 +6,7 @@
 import pygame,sys
 from custom_objects.collision_mask import Mask_class
 from custom_objects.player import *
+from custom_objects.boss import Boss_class
 #from player import Player_class
 
 #Pygame Setup
@@ -16,7 +17,8 @@ font = pygame.font.Font('ttf/DungeonChunk.ttf', 40)
 #Object setup
 collision_mask = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
-sword_group=pygame.sprite.Group()
+sword_group = pygame.sprite.Group()
+boss_group = pygame.sprite.Group()
 
     
 def attack(player):
@@ -133,6 +135,8 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db):
 def boss_room_1(save_slot,window,connection,fpsClock,update_db):
     player = Player_class(45,240)
     player_group.add(player)
+    boss = Boss_class(420, 210)
+    boss_group.add(boss)
     boss_room_1=True
     background_image='images/zone_1_bg.png'
     background=pygame.image.load(f'{background_image}')
@@ -145,6 +149,7 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db):
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
+        boss_group.draw(window)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
