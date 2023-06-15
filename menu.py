@@ -45,20 +45,20 @@ def save_slot_screen(window,connection,select_db,fpsClock):
         save_box2=pygame.draw.rect(window,(0,0,0),(250,320,500,130))
         save_box3=pygame.draw.rect(window,(0,0,0),(250,520,500,130))
         if id_1_check==1:
-            save_box_text1=window.blit(font.render(f"1.{id_1_stats[0][1]}", True, (255, 255, 255)), (265, 170))
-            window.blit(font.render(f"Coins:{id_1_stats[0][3]}", True, (255, 255, 255)), (580, 170))
+            save_box_text1=window.blit(font.render(f"1.{id_1_stats[0][1]}", True, (255, 255, 255)), (275, 170))
+            window.blit(font.render(f"Coins:{id_1_stats[0][3]}", True, (255, 255, 255)), (590, 170))
         else:
-            save_box_text1=window.blit(font.render("New Game", True, (255, 255, 255)), (235, 170))
+            save_box_text1=window.blit(font.render("New Game", True, (255, 255, 255)), (435, 170))
             
         if id_2_check==1:
-            save_box_text2=window.blit(font.render(f"2.{id_2_stats[0][1]}", True, (255, 255, 255)), (265, 370))
-            window.blit(font.render(f"Coins:{id_2_stats[0][3]}", True, (255, 255, 255)), (580, 370))
+            save_box_text2=window.blit(font.render(f"2.{id_2_stats[0][1]}", True, (255, 255, 255)), (275, 370))
+            window.blit(font.render(f"Coins:{id_2_stats[0][3]}", True, (255, 255, 255)), (590, 370))
         else:
             save_box_text2=window.blit(font.render("New Game", True, (255, 255, 255)), (435, 370))
             
         if id_3_check==1:
-            save_box_text3=window.blit(font.render(f"3.{id_3_stats[0][1]}", True, (255, 255, 255)), (265, 570))
-            window.blit(font.render(f"Coins:{id_3_stats[0][3]}", True, (255, 255, 255)), (580, 570))
+            save_box_text3=window.blit(font.render(f"3.{id_3_stats[0][1]}", True, (255, 255, 255)), (275, 570))
+            window.blit(font.render(f"Coins:{id_3_stats[0][3]}", True, (255, 255, 255)), (590, 570))
         else:
             save_box_text3=window.blit(font.render("New Game", True, (255, 255, 255)), (435, 570))
         

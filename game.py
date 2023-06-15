@@ -92,15 +92,8 @@ while start_game:
     elif player_stats[0][5]==4:
         boss_room_1(save_slot,window,connection,fpsClock,update_db,)
     elif player_stats[0][5]==5:
-        scene_room_2(save_slot,window,connection,fpsClock,update_db,)
-    elif player_stats[0][5]==6:
-        combat_room_2(save_slot,window,connection,fpsClock,update_db)
-    elif player_stats[0][5]==7:
-        shop_room_2(save_slot,window,connection,fpsClock,update_db,)
-    elif player_stats[0][5]==8:
-        boss_room_2(save_slot,window,connection,fpsClock,update_db,)
-    elif player_stats[0][5]==9:
         final_scene_room(save_slot,window,connection,fpsClock,update_db,)
+    
     
     
 display()
