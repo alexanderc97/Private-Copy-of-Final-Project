@@ -132,10 +132,11 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db):
     collision_mask.remove(mask)
     player_group.remove(player)
     
-def boss_room_1(save_slot,window,connection,fpsClock,update_db):
+def boss_room_1(save_slot,window,connection,fpsClock,update_db,select_db):
     player = Player_class(45,240)
     player_group.add(player)
-    boss = Boss_class(420, 210)
+    health = select_db(connection,"boss",["health='120'"]).fetchall()
+    boss = Boss_class(420, 210,3,'sprite_images/boss_left.png','sprite_images/boss_right.png',150,190,health)
     boss_group.add(boss)
     boss_room_1=True
     background_image='images/zone_1_bg.png'
@@ -158,8 +159,13 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db):
             if len(sword_group)<1:
                 attack(player)
         player.move()
+        boss.move()
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
-                player.collide()      
+                player.collide() 
+            
+        if pygame.sprite.spritecollide(player, boss_group, False, collided=pygame.sprite.collide_mask):
+            damage= select_db(connection, "boss",["Attack_Power='18'"]).fetchall()
+            player.collision(boss,damage,update_db,save_slot,connection)
         
         if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='5'"],f"id={save_slot}")

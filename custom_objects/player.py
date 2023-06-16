@@ -88,3 +88,8 @@ class Sword(pygame.sprite.Sprite):
         self.rect.x += self.sword_move
         if self.timer==0:
             self.kill()
+            
+    def collision(self,enemy,enemy_damage,update_db,save_slot,connection):
+        collided_sprites = pygame.sprite.spritecollide(self, enemy, False, collided=pygame.sprite.collide_mask)
+        if len(collided_sprites) >0:
+            update_db(connection,"player",[f"Health='{enemy_damage}'"],f"id={save_slot}")

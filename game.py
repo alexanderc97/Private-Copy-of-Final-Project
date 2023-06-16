@@ -90,7 +90,7 @@ while start_game:
     elif player_stats[0][5]==3:
         shop_room_1(save_slot,window,connection,fpsClock,update_db,)
     elif player_stats[0][5]==4:
-        boss_room_1(save_slot,window,connection,fpsClock,update_db,)
+        boss_room_1(save_slot,window,connection,fpsClock,update_db,select_db)
     elif player_stats[0][5]==5:
         final_scene_room(save_slot,window,connection,fpsClock,update_db,)
     
