@@ -20,6 +20,7 @@ WINDOW_HEIGHT = 700
 #Setup of Starting objects
 font = pygame.font.Font('ttf/DungeonChunk.ttf', 40)
 window = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.HWSURFACE| pygame.SCALED | pygame.RESIZABLE)
+pygame.display.set_caption("Shadows of the Forgotten")
 
 #Database Functions and Setup
 def create_connection(db_file):
@@ -63,7 +64,6 @@ def update_db(conn,table,columns_and_data,where_to_update):
     sql = f"UPDATE {table} set {col} where {where_to_update}"
     conn.execute(sql)
     conn.commit()  
- 
      
 #Main game screen display
 def display():
@@ -83,16 +83,16 @@ if new:
 start_game=True
 while start_game:
     player_stats=select_db(connection,"player",[f"id='{save_slot}'"]).fetchall()
-    if player_stats[0][5]==1:
-        scene_room_1(save_slot,window,connection,fpsClock,update_db)
-    elif player_stats[0][5]==2:
-        combat_room_1(save_slot,window,connection,fpsClock,update_db,)
-    elif player_stats[0][5]==3:
-        shop_room_1(save_slot,window,connection,fpsClock,update_db,)
-    elif player_stats[0][5]==4:
-        boss_room_1(save_slot,window,connection,fpsClock,update_db,select_db)
-    elif player_stats[0][5]==5:
-        final_scene_room(save_slot,window,connection,fpsClock,update_db,)
+    if player_stats[0][3]==1:
+        scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+    elif player_stats[0][3]==2:
+        combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+    elif player_stats[0][3]==3:
+        shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+    elif player_stats[0][3]==4:
+        boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+    elif player_stats[0][3]==5:
+        final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats)
     
     
     

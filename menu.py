@@ -6,13 +6,18 @@ import pygame,sys
 fps=60
 pygame.init()
 font = pygame.font.Font('ttf/DungeonChunk.ttf', 30)
-#Title screen display
+title_font = pygame.font.Font('ttf/DungeonChunk.ttf', 70)
+title_buttons_font = pygame.font.Font('ttf/DungeonChunk.ttf', 50)
+
+#Title screen display   
 def title_screen(window,fpsClock):
     title_window=True
     while title_window:
-        window.fill((255,255,255))
-        btn_exit = window.blit(font.render("[Exit]", True, (200, 0, 255)), (445, 500))
-        btn_newgame = window.blit(font.render("[Play Game]", True, (200, 0, 255)), (440, 300))
+        window.fill((0,0,0))
+        window.blit(title_font.render("Shadows of the", True, (255, 255, 255)), (310, 100))
+        window.blit(title_font.render("Forgotten", True, (255, 255, 255)), (380, 170))
+        btn_exit = window.blit(title_buttons_font.render("[Exit]", True, (27, 228, 147)), (450, 450))
+        btn_newgame = window.blit(title_buttons_font.render("[Play Game]", True, (27, 228, 147)), (400, 350))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -39,28 +44,28 @@ def save_slot_screen(window,connection,select_db,fpsClock):
     id_2_stats=select_db(connection,"player",["id='2'"]).fetchall()
     id_3_stats=select_db(connection,"player",["id='3'"]).fetchall()
     while save_slot_window:
-        window.fill((255,255,255))
-        window.blit(font.render("Select a Save Slot", True, (0, 0, 0)), (345, 75))
-        save_box1=pygame.draw.rect(window,(0,0,0),(250,120,500,130))
-        save_box2=pygame.draw.rect(window,(0,0,0),(250,320,500,130))
-        save_box3=pygame.draw.rect(window,(0,0,0),(250,520,500,130))
+        window.fill((0,0,0))
+        window.blit(font.render("Select a Save Slot", True, (255, 255, 255)), (385, 75))
+        save_box1=pygame.draw.rect(window,(255,255,255),(250,120,500,130))
+        save_box2=pygame.draw.rect(window,(255,255,255),(250,320,500,130))
+        save_box3=pygame.draw.rect(window,(255,255,255),(250,520,500,130))
         if id_1_check==1:
-            save_box_text1=window.blit(font.render(f"1.{id_1_stats[0][1]}", True, (255, 255, 255)), (275, 170))
-            window.blit(font.render(f"Coins:{id_1_stats[0][3]}", True, (255, 255, 255)), (590, 170))
+            save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
+            window.blit(font.render(f"Save Point: {id_1_stats[0][3]}", True, (0, 0, 0)), (580, 170))
         else:
-            save_box_text1=window.blit(font.render("New Game", True, (255, 255, 255)), (435, 170))
+            save_box_text1=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 170))
             
         if id_2_check==1:
-            save_box_text2=window.blit(font.render(f"2.{id_2_stats[0][1]}", True, (255, 255, 255)), (275, 370))
-            window.blit(font.render(f"Coins:{id_2_stats[0][3]}", True, (255, 255, 255)), (590, 370))
+            save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
+            window.blit(font.render(f"Save Point: {id_2_stats[0][3]}", True, (0, 0, 0)), (580, 370))
         else:
-            save_box_text2=window.blit(font.render("New Game", True, (255, 255, 255)), (435, 370))
+            save_box_text2=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 370))
             
         if id_3_check==1:
-            save_box_text3=window.blit(font.render(f"3.{id_3_stats[0][1]}", True, (255, 255, 255)), (275, 570))
-            window.blit(font.render(f"Coins:{id_3_stats[0][3]}", True, (255, 255, 255)), (590, 570))
+            save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
+            window.blit(font.render(f"Save Point: {id_3_stats[0][3]}", True, (0, 0, 0)), (570, 570))
         else:
-            save_box_text3=window.blit(font.render("New Game", True, (255, 255, 255)), (435, 570))
+            save_box_text3=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 570))
         
         
         for event in pygame.event.get():
@@ -153,7 +158,7 @@ def opening_game_screen(window,connection,insert_db,fpsClock,save_slot):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:    
                 if btn_confirm.collidepoint(pos) and len(name)>=1:
                     opening_window=False
-                    insert_db(connection,"player",["id","Name","Health","Coins","Weapon_LVL","Save_Point"],[save_slot,name.upper(),100,0,1,1])
+                    insert_db(connection,"player",["id","Name","Health","Save_Point"],[save_slot,name.upper(),100,1])
                 
             if typing:
                 if event.type == pygame.KEYDOWN:
