@@ -13,6 +13,7 @@ from custom_objects.enemy import *
 fps=60
 pygame.init()
 font = pygame.font.Font('ttf/DungeonChunk.ttf', 40)
+pause_font = pygame.font.Font('ttf/DungeonChunk.ttf', 50)
 
 #Object setup
 collision_mask = pygame.sprite.Group()
@@ -26,6 +27,32 @@ def attack(player):
             sword_sprite = Sword(player.rect.x+player.direction*15,player.rect.y+10,player.direction)
             sword_group.add(sword_sprite) 
 
+#Pops up a pause menu when in game, this can be used to leave the game or close the menu
+def pause_menu(window, fpsClock):
+    pause=True
+    while pause:
+        pause_box=pygame.draw.rect(window,(200,200,200),(300,100,400,500))
+        window.blit(pause_font.render("PAUSED", True, (0, 0, 0)), (430, 120))
+        btn_title = window.blit(font.render("[Exit to Title]", True, (0, 140, 86)), (387, 280))
+        btn_close = window.blit(font.render("[Back to Game]", True, (0, 140, 86)), (385, 380))
+        for event in pygame.event.get():
+        # if user  QUIT then the screen will close
+            if event.type == pygame.QUIT:
+                sys.exit()
+            pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
+                        
+                if btn_title.collidepoint(pos):
+                    back=True
+                    pause=False
+                if btn_close.collidepoint(pos):
+                    back=False
+                    pause=False
+                
+        pygame.display.update() #update the display
+        fpsClock.tick(fps) #speed of redraw
+    return back
+    
 def scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player = Player(200,590,player_stats[0][2])
     player_group.add(player)
@@ -54,12 +81,21 @@ def scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
                 
         if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='2'"],f"id={save_slot}")
-            room_1=False        
+            room_1=False      
+        
+        key_input = pygame.key.get_pressed()
+        if key_input[pygame.K_ESCAPE]:  
+            back=pause_menu(window, fpsClock)
+            if back:
+                room_1=False
+        else:
+            back=False
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
     collision_mask.remove(mask)
     player_group.remove(player)
+    return back
     
 def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player = Player(45,240,player_stats[0][2])
@@ -91,10 +127,19 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
             update_db(connection,"player",["Save_Point='3'"],f"id={save_slot}")
             combat_room_1=False        
         
+        key_input = pygame.key.get_pressed()
+        if key_input[pygame.K_ESCAPE]:  
+            back=pause_menu(window, fpsClock)
+            if back:
+                combat_room_1=False
+        else:
+            back=False
+        
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
     collision_mask.remove(mask)
     player_group.remove(player)
+    return back
 
 def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player = Player(45,240,player_stats[0][2])
@@ -124,13 +169,21 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         
         if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='4'"],f"id={save_slot}")
-            shop_room_1=False        
+            shop_room_1=False      
+        
+        key_input = pygame.key.get_pressed()
+        if key_input[pygame.K_ESCAPE]:  
+            back=pause_menu(window, fpsClock)
+            if back:
+                shop_room_1=False
+        else:
+            back=False  
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
     collision_mask.remove(mask)
     player_group.remove(player)
-    
+    return back
 def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player = Player(45,240,player_stats[0][2])
     player_group.add(player)
@@ -159,18 +212,24 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         player.move()
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide() 
-
-
         
         if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='5'"],f"id={save_slot}")
-            boss_room_1=False        
+            boss_room_1=False   
+        
+        key_input = pygame.key.get_pressed()
+        if key_input[pygame.K_ESCAPE]:  
+            back=pause_menu(window, fpsClock)
+            if back:
+                boss_room_1=False
+        else:
+            back=False     
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
     collision_mask.remove(mask)
     player_group.remove(player)
-
+    return back
 def final_scene_room(save_slot,window,connection,fpsClock,update_db):
     final_scene_room=True
     while final_scene_room:
@@ -182,8 +241,6 @@ def final_scene_room(save_slot,window,connection,fpsClock,update_db):
         window.blit(font.render("To be Continued in...", True, (225,225,225)), (350, 250))
         window.blit(font.render("Shadows of the Forgotten: Ancient Shadows DLC", True, (225,225,225)), (100, 300))
         window.blit(font.render("Preorder: $79.99", True, (0,150,0)), (375, 400))
- 
-        
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw

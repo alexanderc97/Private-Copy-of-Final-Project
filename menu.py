@@ -12,11 +12,16 @@ title_buttons_font = pygame.font.Font('ttf/DungeonChunk.ttf', 50)
 #Title screen display   
 def title_screen(window,fpsClock):
     title_window=True
+    background_image='images/title_background.jpg'
+    background=pygame.image.load(f'{background_image}')
+    background=pygame.transform.scale(background, (1000,700))
     while title_window:
         window.fill((0,0,0))
+        window.blit(background,(0, 0))
         window.blit(title_font.render("Shadows of the", True, (255, 255, 255)), (310, 100))
         window.blit(title_font.render("Forgotten", True, (255, 255, 255)), (380, 170))
-        btn_exit = window.blit(title_buttons_font.render("[Exit]", True, (27, 228, 147)), (450, 450))
+        btn_exit = window.blit(title_buttons_font.render("[Exit]", True, (27, 228, 147)), (455, 550))
+        btn_controls = window.blit(title_buttons_font.render("[Controls]", True, (27, 228, 147)), (410, 450))
         btn_newgame = window.blit(title_buttons_font.render("[Play Game]", True, (27, 228, 147)), (400, 350))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -25,6 +30,8 @@ def title_screen(window,fpsClock):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 pos = pygame.mouse.get_pos()
                 
+                if btn_controls.collidepoint(pos):
+                    control_screen(window, fpsClock)
                 if btn_exit.collidepoint(pos):
                     pygame.quit()
                     sys.exit() 
@@ -34,36 +41,76 @@ def title_screen(window,fpsClock):
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
-def save_slot_screen(window,connection,select_db,fpsClock):
+ 
+#Controls screen  
+def control_screen(window,fpsClock):
+    control_window=True
+    background_image='images/title_background.jpg'
+    background=pygame.image.load(f'{background_image}')
+    background=pygame.transform.scale(background, (1000,700))
+    while control_window:
+        window.fill((0,0,0))
+        window.blit(background,(0, 0))
+        window.blit(title_font.render("How to play:", True, (255, 255, 255)), (350, 80))
+        window.blit(title_buttons_font.render("Use W, A, S, D to Move", True, (255, 255, 255)), (310, 240))
+        window.blit(title_buttons_font.render("Use SHIFT to Dash", True, (255, 255, 255)), (340, 310))
+        window.blit(title_buttons_font.render("Use Left Mouse Click to Swing Sword", True, (255, 255, 255)), (150, 380))
+        window.blit(title_buttons_font.render("Use ESC to Pause Game", True, (255, 255, 255)), (300, 450))
+        btn_exit = window.blit(font.render("[Back to Title]", True, (27, 228, 147)), (20, 20))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+                
+                if btn_exit.collidepoint(pos):
+                    control_window=False 
+                    
+        
+        pygame.display.update() #update the display
+        fpsClock.tick(fps) #speed of redraw 
+        
+#Save slot display
+def save_slot_screen(window,connection,select_db,fpsClock,delete_db):
     save_slot=0
     save_slot_window=True
-    id_1_check=len(select_db(connection,"player",["id='1'"]).fetchall())
-    id_2_check=len(select_db(connection,"player",["id='2'"]).fetchall())
-    id_3_check=len(select_db(connection,"player",["id='3'"]).fetchall())
     id_1_stats=select_db(connection,"player",["id='1'"]).fetchall()
     id_2_stats=select_db(connection,"player",["id='2'"]).fetchall()
     id_3_stats=select_db(connection,"player",["id='3'"]).fetchall()
+    background_image='images/title_background.jpg'
+    background=pygame.image.load(f'{background_image}')
+    background=pygame.transform.scale(background, (1000,700))
     while save_slot_window:
+        id_1_check=len(select_db(connection,"player",["id='1'"]).fetchall())
+        id_2_check=len(select_db(connection,"player",["id='2'"]).fetchall())
+        id_3_check=len(select_db(connection,"player",["id='3'"]).fetchall())
         window.fill((0,0,0))
+        window.blit(background,(0, 0))
         window.blit(font.render("Select a Save Slot", True, (255, 255, 255)), (385, 75))
-        save_box1=pygame.draw.rect(window,(255,255,255),(250,120,500,130))
-        save_box2=pygame.draw.rect(window,(255,255,255),(250,320,500,130))
-        save_box3=pygame.draw.rect(window,(255,255,255),(250,520,500,130))
+        btn_exit = window.blit(font.render("[Back to Title]", True, (27, 228, 147)), (20, 20))
+        save_box1=pygame.draw.rect(window,(215,215,215),(250,120,500,130))
+        save_box2=pygame.draw.rect(window,(215,215,215),(250,320,500,130))
+        save_box3=pygame.draw.rect(window,(215,215,215),(250,520,500,130))
         if id_1_check==1:
             save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
-            window.blit(font.render(f"Save Point: {id_1_stats[0][3]}", True, (0, 0, 0)), (580, 170))
+            window.blit(font.render(f"Room: {id_1_stats[0][3]}", True, (0, 0, 0)), (620, 170))
+            delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
         else:
             save_box_text1=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 170))
             
         if id_2_check==1:
             save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
-            window.blit(font.render(f"Save Point: {id_2_stats[0][3]}", True, (0, 0, 0)), (580, 370))
+            window.blit(font.render(f"Room: {id_2_stats[0][3]}", True, (0, 0, 0)), (620, 370))
+            delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
         else:
             save_box_text2=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 370))
             
         if id_3_check==1:
             save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
-            window.blit(font.render(f"Save Point: {id_3_stats[0][3]}", True, (0, 0, 0)), (570, 570))
+            window.blit(font.render(f"Room: {id_3_stats[0][3]}", True, (0, 0, 0)), (620, 570))
+            delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
         else:
             save_box_text3=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 570))
         
@@ -73,43 +120,66 @@ def save_slot_screen(window,connection,select_db,fpsClock):
                 pygame.quit()
                 sys.exit()
             pos = pygame.mouse.get_pos()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:    
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  
+                 
+                if btn_exit.collidepoint(pos):
+                    back=True
+                    save_slot=0
+                    new=False
+                    save_slot_window=False
+                  
                 if save_box1.collidepoint(pos) and id_1_check==0:
+                    back=False
                     save_slot=1
                     new=True
                     save_slot_window=False
                     
                 elif save_box2.collidepoint(pos) and id_2_check==0:
+                    back=False
                     save_slot=2
                     new=True
                     save_slot_window=False
                     
                 elif save_box3.collidepoint(pos) and id_3_check==0:
+                    back=False
                     save_slot=3
                     new=True
                     save_slot_window=False
                     
-                    
                 if save_box1.collidepoint(pos) and id_1_check==1:
+                    back=False
                     save_slot=1
                     new=False
                     save_slot_window=False
                     
                 elif save_box2.collidepoint(pos) and id_2_check==1:
+                    back=False
                     save_slot=2
                     new=False
                     save_slot_window=False
                     
                 elif save_box3.collidepoint(pos) and id_3_check==1:
+                    back=False
                     save_slot=3
                     new=False
                     save_slot_window=False
             
+                if id_1_check==1:
+                    if delete_1.collidepoint(pos):
+                        delete_db(connection,"player","id",1)
+                if id_2_check==1:   
+                    if delete_2.collidepoint(pos):
+                        delete_db(connection,"player","id",2)
+                if id_3_check==1:
+                    if delete_3.collidepoint(pos):
+                        delete_db(connection,"player","id",3)
+                
+                
                        
                                                                   
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw 
-    return save_slot,new
+    return save_slot,new,back
 def opening_text(window, connection, insert_db, fpsClock,save_slot):
     timer= 300
     while timer > 0:
@@ -142,10 +212,10 @@ def opening_game_screen(window,connection,insert_db,fpsClock,save_slot):
     typing=False
     while opening_window:
         window.fill((0,0,0))
-        window.blit(font.render("What is your name, Wanderer?", True, (255, 255, 255)), (285, 175))
-        text_box=pygame.draw.rect(window,(255,255,255),(285,220,465,100))
+        window.blit(font.render("What is your name, Wanderer?", True, (255, 255, 255)), (330, 175))
+        text_box=pygame.draw.rect(window,(255,255,255),(265,220,465,100))
         window.blit(font.render(f"{name.upper()}", True, (0, 0, 0)), (name_position, 255))
-        btn_confirm=window.blit(font.render("CONFIRM", True, (255, 255, 255)), (455, 350))
+        btn_confirm=window.blit(font.render("CONFIRM", True, (255, 255, 255)), (445, 350))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

@@ -73,27 +73,41 @@ def display():
 
              
         
-#Activates the title screen on the front layer and activates the main display behind it        
-title_screen(window,fpsClock)
-save_slot,new=save_slot_screen(window,connection,select_db,fpsClock) 
-if new:
-    opening_text(window, connection, insert_db, fpsClock,save_slot)
-    opening_game_screen(window,connection,insert_db,fpsClock,save_slot) 
+#Activates the title screen on the front layer and activates the main display behind it
+def title_menu():    
+    title=True
+    while title:    
+        title_screen(window,fpsClock)
+        global save_slot
+        save_slot,new,back=save_slot_screen(window,connection,select_db,fpsClock,delete_db) 
+        if back:
+            title=True
+        elif new:
+            opening_text(window, connection, insert_db, fpsClock,save_slot)
+            opening_game_screen(window,connection,insert_db,fpsClock,save_slot)
+            title=False
+        else:
+            title=False
     
+title_menu()    
 start_game=True
 while start_game:
     player_stats=select_db(connection,"player",[f"id='{save_slot}'"]).fetchall()
+        
     if player_stats[0][3]==1:
-        scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+        back=scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==2:
-        combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+        back=combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==3:
-        shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+        back=shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==4:
-        boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+        back=boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==5:
-        final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats)
-    
+        back=final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats)
+        
+    if back:
+        title_menu()
+        
     
     
 display()
