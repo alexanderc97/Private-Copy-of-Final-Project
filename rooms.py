@@ -230,7 +230,7 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     collision_mask.remove(mask)
     player_group.remove(player)
     return back
-def final_scene_room(save_slot,window,connection,fpsClock,update_db):
+def final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats):
     final_scene_room=True
     while final_scene_room:
         window.fill((0,0,0))

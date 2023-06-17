@@ -69,9 +69,7 @@ def update_db(conn,table,columns_and_data,where_to_update):
 def display():
     window.fill((0,0,0))
 
-                
-
-             
+                     
         
 #Activates the title screen on the front layer and activates the main display behind it
 def title_menu():    
