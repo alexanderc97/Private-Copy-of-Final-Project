@@ -9,6 +9,7 @@ from custom_objects.player import *
 from custom_objects.boss import *
 from custom_objects.enemy import *
 
+
 #Pygame Setup
 fps=60
 pygame.init()
@@ -20,6 +21,21 @@ collision_mask = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 sword_group = pygame.sprite.Group()
 boss_group = pygame.sprite.Group()
+enemy_count=1
+
+
+def collision(object1, object2):
+    return object1.colliderect(object2) 
+
+def doors(window,player,enemy_count):
+    Door_Left=pygame.draw.rect(window,(94,94,94,1),(1,190,10,140))
+    Door_Right=pygame.draw.rect(window,(94,94,94,1),(990,240,10,130))
+    if (collision (player.rect, Door_Left)) or (collision (player.rect, Door_Right) and enemy_count>0):
+        player.rect.x -= player.movex
+        player.rect.y -= player.movey
+    if enemy_count==0 or enemy_count<1:
+        Door_Right=pygame.draw.rect(window,(94,94,94,1),(-980,-240,10,130))
+    
 
 def attack(player):
     for event in pygame.event.get():
@@ -110,6 +126,7 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         window.fill((255,255,255))
         collision_mask.draw(window)
         window.blit(background,(0, 0))
+        doors(window,player,enemy_count)
         player_group.draw(window)
         sword_group.draw(window)
         for event in pygame.event.get():
@@ -150,6 +167,10 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     mask = Mask_class(0,0,1000,700,'masks/shop_mask.png')
     collision_mask.add(mask)
     shop_room_1=True
+    Door_Left=pygame.draw.rect(window,(94,94,94,1),(10,190,10,140))
+    if (collision (player.rect, Door_Left)):
+        player.rect.x -= player.movex
+        player.rect.y -= player.movey
     while shop_room_1:
         window.fill((255,255,255))
         collision_mask.draw(window)
@@ -199,6 +220,7 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         window.fill((255,255,255))
         collision_mask.draw(window)
         window.blit(background,(0, 0))
+        doors(window,player,enemy_count)
         player_group.draw(window)
         sword_group.draw(window)
         boss_group.draw(window)

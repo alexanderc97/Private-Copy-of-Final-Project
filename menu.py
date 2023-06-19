@@ -94,38 +94,23 @@ def save_slot_screen(window,connection,select_db,fpsClock,delete_db):
         save_box2=pygame.draw.rect(window,(215,215,215),(250,320,500,130))
         save_box3=pygame.draw.rect(window,(215,215,215),(250,520,500,130))
         if id_1_check==1:
-            if id_1_stats[0][3]==5:
-                save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
-                window.blit(font.render(f"GAME COMPLETE", True, (0, 0, 0)), (620, 170))
-                delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
-            else:
-                save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
-                window.blit(font.render(f"Room: {id_1_stats[0][3]}", True, (0, 0, 0)), (620, 170))
-                delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
+            save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
+            window.blit(font.render(f"Room: {id_1_stats[0][3]}", True, (0, 0, 0)), (620, 170))
+            delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
         else:
             save_box_text1=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 170))
             
         if id_2_check==1:
-            if id_2_stats[0][3]==5:
-                save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
-                window.blit(font.render(f"GAME COMPLETE", True, (0, 0, 0)), (620, 370))
-                delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
-            else:
-                save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
-                window.blit(font.render(f"Room: {id_2_stats[0][3]}", True, (0, 0, 0)), (620, 370))
-                delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
+            save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
+            window.blit(font.render(f"Room: {id_2_stats[0][3]}", True, (0, 0, 0)), (620, 370))
+            delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
         else:
             save_box_text2=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 370))
             
         if id_3_check==1:
-            if id_3_stats[0][3]==5:
-                save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
-                window.blit(font.render(f"GAME COMPLETE", True, (0, 0, 0)), (620, 570))
-                delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
-            else:
-                save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
-                window.blit(font.render(f"Room: {id_3_stats[0][3]}", True, (0, 0, 0)), (620, 570))
-                delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
+            save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
+            window.blit(font.render(f"Room: {id_3_stats[0][3]}", True, (0, 0, 0)), (620, 570))
+            delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
         else:
             save_box_text3=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 570))
         
@@ -196,22 +181,18 @@ def save_slot_screen(window,connection,select_db,fpsClock,delete_db):
         fpsClock.tick(fps) #speed of redraw 
     return save_slot,new,back
 def opening_text(window, connection, insert_db, fpsClock,save_slot):
-    timer= 300
+    timer= 1000
     while timer > 0:
         window.fill((0,0,0))
-        start_text=window.blit(font.render("In the depths of an underground realm, a new species", True, (225,225,225)), (25, 25))
-        start_text=window.blit(font.render("called Luminari has emerged. They possess the ability", True, (225,225,225)), (25, 75))
-        start_text=window.blit(font.render("to mimic languages and lack the need for food. Nobody", True, (225,225,225)), (25, 125))
-        start_text=window.blit(font.render("true strength or where they come from. Luminari have", True, (225,225,225)), (25, 175))
-        start_text=window.blit(font.render("started leaving the safety of the underworld and", True, (225,225,225)), (25, 225))
-        start_text=window.blit(font.render("venturing to the surface, a place where all life", True, (225,225,225)), (25, 275))
-        start_text=window.blit(font.render("perishes. You awaken in a cavern, feeling weak and ", True, (225,225,225)), (25, 325))
-        start_text=window.blit(font.render("fragmented, driven by an unknown impulse to reach ", True, (225,225,225)), (25, 375))
-        start_text=window.blit(font.render("As a Luminari, you embark on a journey through ", True, (225,225,225)), (25, 425))
-        start_text=window.blit(font.render("treacherous zones, facing waves of enemies, uncovering ", True, (225,225,225)), (25, 475))
-        start_text=window.blit(font.render("the truth about your past, and battling powerful bosses.  ", True, (225,225,225)), (25, 525))
-        start_text=window.blit(font.render("Are you ready to explore, fight, and discover the ", True, (225,225,225)), (25, 575))
-        start_text=window.blit(font.render("secrets that await in this captivating underground world?", True, (225,225,225)), (25, 625))
+        start_text=window.blit(font.render("In the depths of an underground realm, a new species named Luminari has emerged.", True, (225,225,225)), (25, 75))
+        start_text=window.blit(font.render("They possess the ability to mimic languages and lack the need for food. Nobody", True, (225,225,225)), (25, 125))
+        start_text=window.blit(font.render("knows true strength or where they come from. Luminari started leaving the ", True, (225,225,225)), (25, 175))
+        start_text=window.blit(font.render("safety of the underworld and venturing to the surface; where all life perishes.", True, (225,225,225)), (25, 225))
+        start_text=window.blit(font.render("You awaken in a cavern, feeling weak and fragmented, driven by an unknown ", True, (225,225,225)), (25, 325))
+        start_text=window.blit(font.render("impulse to reach the surface. As a Luminari, you embark on a journey through", True, (225,225,225)), (25, 375))
+        start_text=window.blit(font.render("treacherous zones, facing waves of enemies, uncovering the truth about ", True, (225,225,225)), (25, 425))
+        start_text=window.blit(font.render("your past, and battling powerful bosses. Are you ready to explore, fight, ", True, (225,225,225)), (25, 475))
+        start_text=window.blit(font.render("and discover the secrets that await in this captivating underground world?", True, (225,225,225)), (25, 525))
 
         
         timer-=1
