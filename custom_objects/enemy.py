@@ -24,9 +24,11 @@ class Enemy(pygame.sprite.Sprite):
             self.timer = self.reset
         #ENEMY tracking PLAYER
             if self.rect.x > x:
-                self.move(-1,0) 
+                self.move(-1,0)
+                self.image = self.img_right
             if self.rect.x < x:
-                self.move(1,0) 
+                self.move(1,0)
+                self.image = self.img_left
             if self.rect.y > y:
                 self.move(0,-1)
             if self.rect.y < y:

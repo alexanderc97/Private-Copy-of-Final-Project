@@ -219,14 +219,14 @@ def opening_game_screen(window,connection,insert_db,fpsClock,save_slot):
     opening_window=True
     first_run=1
     name=""
-    name_position=515
+    name_position=505
     typing=False
     while opening_window:
         window.fill((0,0,0))
         window.blit(font.render("What is your name, Wanderer?", True, (255, 255, 255)), (330, 175))
         text_box=pygame.draw.rect(window,(255,255,255),(265,220,465,100))
         window.blit(font.render(f"{name.upper()}", True, (0, 0, 0)), (name_position, 255))
-        btn_confirm=window.blit(font.render("CONFIRM", True, (255, 255, 255)), (445, 350))
+        btn_confirm=window.blit(font.render("CONFIRM", True, (255, 255, 255)), (450, 350))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
