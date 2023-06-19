@@ -94,23 +94,38 @@ def save_slot_screen(window,connection,select_db,fpsClock,delete_db):
         save_box2=pygame.draw.rect(window,(215,215,215),(250,320,500,130))
         save_box3=pygame.draw.rect(window,(215,215,215),(250,520,500,130))
         if id_1_check==1:
-            save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
-            window.blit(font.render(f"Room: {id_1_stats[0][3]}", True, (0, 0, 0)), (620, 170))
-            delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
+            if id_1_stats[0][3]==5:
+                save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
+                window.blit(font.render(f"GAME COMPLETE", True, (0, 0, 0)), (620, 170))
+                delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
+            else:
+                save_box_text1=window.blit(font.render(f"1. {id_1_stats[0][1]}", True, (0, 0, 0)), (275, 170))
+                window.blit(font.render(f"Room: {id_1_stats[0][3]}", True, (0, 0, 0)), (620, 170))
+                delete_1=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 170))
         else:
             save_box_text1=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 170))
             
         if id_2_check==1:
-            save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
-            window.blit(font.render(f"Room: {id_2_stats[0][3]}", True, (0, 0, 0)), (620, 370))
-            delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
+            if id_2_stats[0][3]==5:
+                save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
+                window.blit(font.render(f"GAME COMPLETE", True, (0, 0, 0)), (620, 370))
+                delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
+            else:
+                save_box_text2=window.blit(font.render(f"2. {id_2_stats[0][1]}", True, (0, 0, 0)), (275, 370))
+                window.blit(font.render(f"Room: {id_2_stats[0][3]}", True, (0, 0, 0)), (620, 370))
+                delete_2=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 370))
         else:
             save_box_text2=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 370))
             
         if id_3_check==1:
-            save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
-            window.blit(font.render(f"Room: {id_3_stats[0][3]}", True, (0, 0, 0)), (620, 570))
-            delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
+            if id_3_stats[0][3]==5:
+                save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
+                window.blit(font.render(f"GAME COMPLETE", True, (0, 0, 0)), (620, 570))
+                delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
+            else:
+                save_box_text3=window.blit(font.render(f"3. {id_3_stats[0][1]}", True, (0, 0, 0)), (275, 570))
+                window.blit(font.render(f"Room: {id_3_stats[0][3]}", True, (0, 0, 0)), (620, 570))
+                delete_3=window.blit(font.render("[Delete Save]", True, (27, 228, 147)), (765, 570))
         else:
             save_box_text3=window.blit(font.render("New Game", True, (0, 0, 0)), (445, 570))
         
