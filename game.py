@@ -91,11 +91,15 @@ title_menu()
 start_game=True
 while start_game:
     player_stats=select_db(connection,"player",[f"id='{save_slot}'"]).fetchall()
-        
+    enemy1_stats=select_db(connection,"enemy",[f"id='1'"]).fetchall()
+    enemy2_stats=select_db(connection,"enemy",[f"id='2'"]).fetchall()
+    enemy3_stats=select_db(connection,"enemy",[f"id='3'"]).fetchall()
+    enemyb_stats=select_db(connection,"boss",[f"id='1'"]).fetchall()
+    
     if player_stats[0][3]==1:
         back=scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==2:
-        back=combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+        back=combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enemy1_stats,enemy2_stats,enemy3_stats)
     elif player_stats[0][3]==3:
         back=shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==4:

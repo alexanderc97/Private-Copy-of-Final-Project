@@ -2,10 +2,8 @@
 #Date: May 23 2023
 #Purpose: Room file, runs all of our combat, shop, and boss rooms.
 #MAKE ENIMIES AND BOSS READ DATABASE WHEN DRAWING
-#FIX ATTACK DEF(DUSOME HELP?)
 #DEATH SCREEN
 #BOSS BATTLE
-#
 #SOUND?
 
 #Imports
@@ -29,19 +27,7 @@ boss_group = pygame.sprite.Group()
 
 def collision(object1, object2):
     return object1.colliderect(object2)
-
-
-def doors(window,player,enemy_count):
-    Door_Left=pygame.draw.rect(window,(94,94,94,1),(1,190,10,140))
-    Door_Right=pygame.draw.rect(window,(94,94,94,1),(990,240,10,130))
-    if (collision (player.rect, Door_Left)) or (collision (player.rect, Door_Right) and enemy_count>0):
-        player.rect.x -= player.movex
-        player.rect.y -= player.movey
-    if enemy_count==0 or enemy_count<1:
-        Door_Right=pygame.draw.rect(window,(94,94,94,1),(-980,-240,10,130))
-    
-
-
+  
 #Pops up a pause menu when in game, this can be used to leave the game or close the menu
 def pause_menu(window, fpsClock):
     pause=True
@@ -68,12 +54,20 @@ def pause_menu(window, fpsClock):
         fpsClock.tick(fps) #speed of redraw
     return back
 
-def attack(player):   
-    for event in pygame.event.get():
-        if event.type==pygame.MOUSEBUTTONDOWN and event.button==1:
-            sword_sprite = Sword(player.rect.x+player.direction*15,player.rect.y+10,player.direction)
-            sword_group.add(sword_sprite)     
-            
+def doors(window,player,enemy_count):
+    Door_Left=pygame.draw.rect(window,(94,94,94,1),(1,190,10,140))
+    Door_Right=pygame.draw.rect(window,(94,94,94,1),(990,240,10,130))
+    if (collision (player.rect, Door_Left)) or (collision (player.rect, Door_Right) and enemy_count>0):
+        player.rect.x -= player.movex
+        player.rect.y -= player.movey
+    if enemy_count==0 or enemy_count<1:
+        Door_Right=pygame.draw.rect(window,(94,94,94,1),(-980,-240,10,130))
+        
+def attack(player,event):   
+    if event.type==pygame.MOUSEBUTTONDOWN and event.button==1:
+        sword_sprite = Sword(player.rect.x+player.direction*15,player.rect.y+10,player.direction)
+        sword_group.add(sword_sprite)  
+        
 def scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player = Player(200,590,player_stats[0][2])
     player_group.add(player)
@@ -88,14 +82,13 @@ def scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)
-        sword_group.draw(window)
+        sword_group.draw(window)        
+        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,enemy_group)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
                 sys.exit()
-        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15)
-        if len(sword_group)<1:
-            attack(player)    
+            attack(player,event)    
         player.move()
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()     
@@ -118,12 +111,15 @@ def scene_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player_group.remove(player)
     return back
     
-def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
-    enemy_count=8
-    enemy = Enemy(100,300,1,"sprite_images/Enemy1L.png","sprite_images/Enemy1R.png",50,45,100)
+def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enemy1_stats,enemy2_stats,enemy3_stats):
+    enemy_count = 1
+    enemy1 = Enemy(400,300,1,"sprite_images/Enemy1L.png","sprite_images/Enemy1R.png",50,45,enemy1_stats[0][2])
+    enemy2 = Enemy(600,200,2,"sprite_images/Enemy2L.png","sprite_images/Enemy2R.png",40,55,enemy2_stats[0][2])
+    enemy3 = Enemy(900,700,3,"sprite_images/Enemy3L.png","sprite_images/Enemy3R.png",40,55,enemy3_stats[0][2])
+    
     player = Player(45,240,player_stats[0][2])
     player_group.add(player)
-    enemy_group.add(enemy)
+    enemy_group.add(enemy1,enemy2,enemy3)
     combat_room_1=True
     background_image='images/zone_1_bg.png'
     background=pygame.image.load(f'{background_image}')
@@ -138,18 +134,22 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         doors(window,player,enemy_count)
         sword_group.draw(window)
         enemy_group.draw(window)
+        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,enemy_group)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
                 sys.exit()
-        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15)
-        if len(sword_group)<1:
-            attack(player)
+            attack(player,event)
         player.move()
-        enemy.track(player.rect.x,player.rect.y)
-        enemy_group.update(player_group)
+        enemy1.track(player.rect.x,player.rect.y)
+        enemy2.track(player.rect.x,player.rect.y)
+        enemy3.track(player.rect.x,player.rect.y)
+        enemy1.update(player_group,enemy1_stats[0][3])
+        enemy2.update(player_group,enemy2_stats[0][3])
+        enemy3.update(player_group,enemy3_stats[0][3])
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()
+                
         
         if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='3'"],f"id={save_slot}")
@@ -184,13 +184,12 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         window.blit(background,(0, 0))
         player_group.draw(window)
         sword_group.draw(window)
+        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,enemy_group)
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
                 sys.exit()
-        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15)
-        if len(sword_group)<1:
-            attack(player)
+            attack(player,event)
         player.move()
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()      
@@ -213,7 +212,7 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player_group.remove(player)
     return back
 def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
-    enemy_count=1
+    enemy_count = 1
     player = Player(45,240,player_stats[0][2])
     player_group.add(player)
     boss = Enemy(420, 210,3,'sprite_images/boss_left.png','sprite_images/boss_right.png',150,190,120)
@@ -228,17 +227,17 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
         window.fill((255,255,255))
         collision_mask.draw(window)
         window.blit(background,(0, 0))
+        player_group.draw(window)  
         doors(window,player,enemy_count)
-        player_group.draw(window)
         sword_group.draw(window)
         boss_group.draw(window)
+        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,enemy_group)
+      
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
                 sys.exit()
-        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15)
-        if len(sword_group)<1:
-            attack(player)
+            attack(player,event)
         player.move()
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide() 
@@ -274,3 +273,4 @@ def final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats
         
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
+        

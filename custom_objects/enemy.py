@@ -35,16 +35,16 @@ class Enemy(pygame.sprite.Sprite):
                 self.move(0,1)
     
     #Collision update method
-    def update(self,player):
-        self.collision(player)
+    def update(self,player,enemy_dmg):
+        self.collision(player,enemy_dmg)
         
     #ENEMY collide with PLAYER   
-    def collision(self,player):
+    def collision(self,player,enemy_dmg):
         collided_sprites = pygame.sprite.spritecollide(self, player, False, collided=pygame.sprite.collide_mask)
         if len(collided_sprites) >0:
-            collided_sprites[0].health_lower(5)
+            collided_sprites[0].health_lower(enemy_dmg)
             #Where we would kill player and lose game
-            
+
     #Enemy health lower when hit by sword
     def health_lower(self,sword_dmg):
         self.health -= sword_dmg
