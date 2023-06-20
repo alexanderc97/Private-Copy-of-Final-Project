@@ -45,9 +45,37 @@ class Enemy(pygame.sprite.Sprite):
             collided_sprites[0].health_lower(enemy_dmg)
             
             
+            
     #Enemy health lower when hit by sword
     def health_lower(self,sword_dmg,enemy_count):
         self.health -= sword_dmg
         if self.health <= 0:
             self.kill()
             enemy_count -=1
+            
+class Enemy_bullet(pygame.sprite.Sprite):
+    def __init__(self, startX,startY,width,height,color):
+        super().__init__()
+        self.image = pygame.Surface([width, height],pygame.SRCALPHA).convert_alpha()
+        pygame.draw.rect(self.image,(color),(0,0,width,height))
+        self.rect = self.image.get_rect(topleft =(startX,startY))
+        self.mask = pygame.mask.from_surface(self.image)
+   
+    def update(self,collision_mask,player_group,enemy_dmg,player,direction):
+        self.shoot(collision_mask,player_group,enemy_dmg,player,direction)
+           
+    def shoot(self,collision_mask,player_group,enemy_dmg,player,direction):
+       
+        if pygame.sprite.spritecollide(self, collision_mask, False, collided=pygame.sprite.collide_mask):
+            self.kill()
+        if pygame.sprite.spritecollide(self, player_group, False, collided=pygame.sprite.collide_mask):
+            player.health_lower(enemy_dmg)
+            self.kill()
+        if direction == 1:
+            self.rect.y+=4
+        elif direction == 2:
+            self.rect.y-=4
+        elif direction == 3:
+            self.rect.x+=4
+        elif direction == 4:
+            self.rect.x-=4

@@ -89,7 +89,7 @@ def title_menu():
         else:
             title=False
             
-#mixer.music.play()      
+mixer.music.play()      
 title_menu()    
 start_game=True
 while start_game:
@@ -106,7 +106,7 @@ while start_game:
     elif player_stats[0][3]==3:
         back=shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
     elif player_stats[0][3]==4:
-        back=boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats)
+        back=boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enemyb_stats)
     elif player_stats[0][3]==5:
         back=final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats)
         

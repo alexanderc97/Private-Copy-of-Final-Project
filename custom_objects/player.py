@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
     def health_lower(self,enemy_dmg):
         self.health -= enemy_dmg
         if self.health <= 0:
-            self.kill()  
+            self.kill() 
                   
 class Sword(pygame.sprite.Sprite):
     timer=20
