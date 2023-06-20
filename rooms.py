@@ -184,6 +184,8 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,en
             else:
                 enemy_group.remove(enemy1,enemy2,enemy3)
                 combat_room_1=False
+        else:
+            back=False
                 
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()
@@ -201,8 +203,6 @@ def combat_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,en
                 combat_room_1=False   
             else:
                 back=False
-        else:
-            back=False
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
     collision_mask.remove(mask)
@@ -289,6 +289,18 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enem
                 sys.exit()
             attack(player,event)
         player.move()
+        
+        if player.health <=0:
+            back = death_menu(window, fpsClock)
+            if back:
+                boss_group.remove(boss)
+                boss_room_1=False
+            else:
+                boss_group.remove(boss)
+                boss_room_1=False
+        else:
+            back=False
+                
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
                 player.collide()
        
@@ -302,8 +314,9 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enem
             if back:
                 boss_group.remove(boss)
                 boss_room_1=False
-        else:
-            back=False    
+            else:
+                back=False
+           
        
         if timer<1:
             bullets.add(Enemy_bullet(boss.rect.x+30,boss.rect.y+30,40,40,(0, 140, 86)))
