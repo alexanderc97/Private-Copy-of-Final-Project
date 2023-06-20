@@ -11,6 +11,7 @@ import pygame,sys
 from custom_objects.collision_mask import Mask_class
 from custom_objects.player import *
 from custom_objects.enemy import *
+from random import *
 
 #Pygame Setup
 fps=60
@@ -23,6 +24,7 @@ player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 sword_group = pygame.sprite.Group()
 boss_group = pygame.sprite.Group()
+bullets=pygame.sprite.Group()
 
 def collision(object1, object2):
     return object1.colliderect(object2)
@@ -252,11 +254,13 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     collision_mask.remove(mask)
     player_group.remove(player)
     return back
-def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
+def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enemyb_stats):
     enemy_count = 1
+    timer=fps*1.2
+    direction_timer=fps*4
+    boss = Enemy(420,210,1,"sprite_images/boss_left.png","sprite_images/boss_right.png",150,190,enemyb_stats[0][2])
     player = Player(45,240,player_stats[0][2])
     player_group.add(player)
-    boss = Enemy(420, 210,3,'sprite_images/boss_left.png','sprite_images/boss_right.png',150,190,120)
     boss_group.add(boss)
     boss_room_1=True
     background_image='images/zone_1_bg.png'
@@ -264,16 +268,21 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     background=pygame.transform.scale(background, (1000,700))
     mask = Mask_class(0,0,1000,700,'masks/combat_mask.png')
     collision_mask.add(mask)
+    direction=1
     while boss_room_1:
         window.fill((255,255,255))
+        timer-=1
+        direction_timer-=1
         collision_mask.draw(window)
         window.blit(background,(0, 0))
         player_group.draw(window)  
         doors(window,player,enemy_count)
         sword_group.draw(window)
         boss_group.draw(window)
-        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,enemy_group)
-      
+        bullets.draw(window)
+        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,boss_group)
+        boss.track(player.rect.x,player.rect.y)
+        boss.update(player_group,enemyb_stats[0][3])
         for event in pygame.event.get():
     # if user  QUIT then the screen will close
             if event.type == pygame.QUIT:
@@ -281,27 +290,36 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
             attack(player,event)
         player.move()
         if pygame.sprite.spritecollide(player, collision_mask, False, collided=pygame.sprite.collide_mask):
-                player.collide() 
-        
+                player.collide()
+       
         if player.rect.x>1000-20:
             update_db(connection,"player",["Save_Point='5'"],f"id={save_slot}")
-            boss_room_1=False   
-        
+            boss_room_1=False  
+       
         key_input = pygame.key.get_pressed()
         if key_input[pygame.K_ESCAPE]:  
             back=pause_menu(window, fpsClock)
             if back:
+                boss_group.remove(boss)
                 boss_room_1=False
-            else:
-                back=False
         else:
-            back=False     
-        
+            back=False    
+       
+        if timer<1:
+            bullets.add(Enemy_bullet(boss.rect.x+30,boss.rect.y+30,40,40,(0, 140, 86)))
+            timer=fps*4
+       
+        if direction_timer<1:
+            direction_timer=fps*8
+            direction = randint(1,4)
+        bullets.update(collision_mask,player_group,enemyb_stats[0][3],player,direction)
+       
         pygame.display.update() #update the display
         fpsClock.tick(fps) #speed of redraw
     collision_mask.remove(mask)
     player_group.remove(player)
     return back
+
 def final_scene_room(save_slot,window,connection,fpsClock,update_db,player_stats):
     final_scene_room=True
     while final_scene_room:
