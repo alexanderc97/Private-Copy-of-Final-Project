@@ -5,6 +5,7 @@
 
 #Basic PyGame Setup Code and Object Imports
 import pygame,sys
+from pygame import mixer
 from random import *
 import sqlite3 
 from menu import *
@@ -21,7 +22,8 @@ WINDOW_HEIGHT = 700
 font = pygame.font.Font('ttf/DungeonChunk.ttf', 40)
 window = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.HWSURFACE| pygame.SCALED | pygame.RESIZABLE)
 pygame.display.set_caption("Shadows of the Forgotten")
-
+mixer.music.load('game_audio.mp3')
+mixer.music.set_volume(0.2)
 #Database Functions and Setup
 def create_connection(db_file):
     #create a database connection to the SQLite database
@@ -86,7 +88,8 @@ def title_menu():
             title=False
         else:
             title=False
-    
+            
+#mixer.music.play()      
 title_menu()    
 start_game=True
 while start_game:
@@ -113,10 +116,9 @@ while start_game:
     
     
 display()
-          
+       
 #Main Loop
 while True:
-    display() 
-    
+    display()
     pygame.display.update() #update the display
     fpsClock.tick(fps) #speed of redraw

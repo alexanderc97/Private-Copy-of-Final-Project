@@ -81,7 +81,7 @@ class Sword(pygame.sprite.Sprite):
             self.mask  = pygame.mask.from_surface(self.image)
             
     #Sword update method to follow player when stabbing and also moving        
-    def update(self,y,x,enemy_group):
+    def update(self,y,x,enemy,enemy_count):
         self.timer-=1
 
         if self.direction ==1:
@@ -94,15 +94,15 @@ class Sword(pygame.sprite.Sprite):
             
         self.rect.y = y
         self.rect.x = x
-        self.sword_move +=2*speed
+        self.sword_move +=4*speed
         self.rect.x += self.sword_move
         if self.timer==0:
             self.kill()
-        self.collision(enemy_group) 
+        self.collision(enemy,enemy_count)
          
     #SWORD collide with ENEMY      
-    def collision(self,enemy):
+    def collision(self,enemy,enemy_count):
         collided_sprites = pygame.sprite.spritecollide(self, enemy, False, collided=pygame.sprite.collide_mask)
         if len(collided_sprites) >0:
+             collided_sprites[0].health_lower(10,enemy_count)
              self.kill()
-             collided_sprites[0].health_lower(2)
