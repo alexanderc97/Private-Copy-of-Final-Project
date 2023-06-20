@@ -255,7 +255,7 @@ def shop_room_1(save_slot,window,connection,fpsClock,update_db,player_stats):
     player_group.remove(player)
     return back
 def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enemyb_stats):
-    enemy_count = 1
+    enemy_count = 0
     timer=fps*1.2
     direction_timer=fps*4
     boss = Enemy(420,210,1,"sprite_images/boss_left.png","sprite_images/boss_right.png",150,190,enemyb_stats[0][2])
@@ -280,7 +280,7 @@ def boss_room_1(save_slot,window,connection,fpsClock,update_db,player_stats,enem
         sword_group.draw(window)
         boss_group.draw(window)
         bullets.draw(window)
-        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,boss_group)
+        sword_group.update(player.rect.y+10,player.rect.x+player.direction*15,boss_group,enemy_count)
         boss.track(player.rect.x,player.rect.y)
         boss.update(player_group,enemyb_stats[0][3])
         for event in pygame.event.get():
